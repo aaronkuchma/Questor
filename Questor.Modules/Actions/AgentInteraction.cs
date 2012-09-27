@@ -604,9 +604,9 @@ namespace Questor.Modules.Actions
 
                 if (!loadedAmmo)
                 {
-                    Logging.Log("AgentInteraction", "Detecting damage type for [" + missionName + "]", Logging.yellow);
                     Cache.Instance.DamageType = GetMissionDamageType(html);
                     LoadSpecificAmmo(new[] { Cache.Instance.DamageType });
+                    Logging.Log("AgentInteraction", "Detected configured damage type for [" + missionName + "] is [" + Cache.Instance.DamageType + "]", Logging.yellow);
                 }
 
                 if (Purpose == AgentInteractionPurpose.AmmoCheck)
@@ -770,6 +770,10 @@ namespace Questor.Modules.Actions
                     Logging.Log("AgentInteraction", "Current standings [" + Math.Round(Cache.Instance.AgentEffectiveStandingtoMe, 2) + "] is above our configured minimum [" + Settings.Instance.MinAgentBlackListStandings + "].  Declining [" + Cache.Instance.Mission.Name + "]", Logging.yellow);
                 }
             }
+            
+            //
+            // this likely needs to be removed...
+            //
             if (_States.CurrentStorylineState == StorylineState.AcceptMission)
             {
                 Logging.Log("AgentInteraction", "Storyline: Storylines cannot be declined, thus we will add this agent to the blacklist for this session.", Logging.yellow);
@@ -779,16 +783,22 @@ namespace Questor.Modules.Actions
                 Cache.Instance.AgentBlacklist.Add(Cache.Instance.CurrentStorylineAgentId);
                 return;
             }
+
+            //
+            // this closes the convo, blacklists the agent for this session and goes back to base.
+            //
             if (_States.CurrentStorylineState == StorylineState.DeclineMission)
             {
                 Logging.Log("AgentInteraction", "Storyline: Declining mission.", Logging.yellow);
 
+                CloseConversation();
                 _States.CurrentStorylineState = StorylineState.Idle;
                 _States.CurrentCombatMissionBehaviorState = CombatMissionsBehaviorState.GotoBase;
                 _States.CurrentAgentInteractionState = AgentInteractionState.Idle;
                 Cache.Instance.AgentBlacklist.Add(Cache.Instance.CurrentStorylineAgentId);
                 return;
             }
+
             // Decline and request a new mission
             Logging.Log("AgentInteraction", "Saying [Decline]", Logging.yellow);
             decline.Say();

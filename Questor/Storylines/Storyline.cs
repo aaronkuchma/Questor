@@ -1,4 +1,6 @@
 
+using System.Xml.Linq;
+
 namespace Questor.Storylines
 {
     using System;
@@ -337,9 +339,10 @@ namespace Questor.Storylines
 
                     if (_States.CurrentAgentInteractionState == AgentInteractionState.Done)
                     {
+                        Logging.Log("Storyline.DeclineMission","Attempting to Remove Storyline from Journal",Logging.white);
+                        Cache.Instance.DirectEve.AgentMissions.Remove(StorylineMission);
                         _States.CurrentAgentInteractionState = AgentInteractionState.Idle;
                         // If there is no mission anymore then we're done (we declined it)
-                        
                     }
                     break;
 
