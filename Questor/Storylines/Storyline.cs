@@ -138,18 +138,21 @@ namespace Questor.Storylines
                     return missionsInJournal.FirstOrDefault(m => m.AgentId == Cache.Instance.CurrentStorylineAgentId);
 
                 missionsInJournal = missionsInJournal.Where(m => !Cache.Instance.AgentBlacklist.Contains(m.AgentId)).ToList();
-                missionsInJournal = missionsInJournal.Where(m => m.Important).ToList();
                 Logging.Log("Storyline", "Currently have  [" + missionsInJournal.Count() + "] available storyline missions", Logging.Yellow);
                 if (Settings.Instance.DebugStorylineMissions)
                 {
                     int i = 1;
                     foreach (DirectAgentMission _mission in missionsInJournal)
                     {
-                        Logging.Log("Storyline", "[" + i + "] Available Storyline needs XML named  [" + Cache.Instance.FilterPath(_mission.Name) + ".xml]", Logging.Yellow);
+                        Logging.Log("Storyline", "[" + i + "] Named      [" + Cache.Instance.FilterPath(_mission.Name) + ".xml]", Logging.Yellow);
+                        Logging.Log("Storyline", "[" + i + "] AgentID    [" + _mission.AgentId + "]", Logging.Yellow);
+                        Logging.Log("Storyline", "[" + i + "] Important? [" + _mission.Important + "]", Logging.Yellow);
+                        Logging.Log("Storyline", "[" + i + "] State      [" + _mission.State + "]", Logging.Yellow);
+                        Logging.Log("Storyline", "[" + i + "] Type       [" + _mission.Type + "]", Logging.Yellow);
                         i++;
-                    }    
-                }
-                
+                    }
+                } 
+                missionsInJournal = missionsInJournal.Where(m => m.Important).ToList();
                 missionsInJournal = missionsInJournal.Where(m => _storylines.ContainsKey(Cache.Instance.FilterPath(m.Name)));
                 Logging.Log("Storyline", "Currently have  [" + missionsInJournal.Count() + "] storyline missions questor knows how to do", Logging.Yellow);
                 missionsInJournal = missionsInJournal.Where(m => Settings.Instance.MissionBlacklist.All(b => b.ToLower() != Cache.Instance.FilterPath(m.Name).ToLower())).ToList();
