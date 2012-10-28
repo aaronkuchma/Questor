@@ -44,6 +44,9 @@ namespace Questor.Storylines
                                {"Materials For War Preparation", new MaterialsForWarPreparation()},
                                {"Transaction Data Delivery", new TransactionDataDelivery()},
                                //{"A Special Delivery", new GenericCourier()}, // Needs 40k m3 cargo capacity (i.e. Iteron Mark V, T2 CHO rigs)
+                               {"Kidnappers Strike - The Interrogation (2 of 10)", new GenericCourier()},//lvl3
+                               {"Kidnappers Strike - Possible Leads (4 of 10)", new GenericCourier()},//lvl3
+                               {"Kidnappers Strike - The Flu Outbreak (6 of 10)", new GenericCourier()},//lvl3
                                /* COURIER/DELIVERY - AMARR */
                                {"Opiate of the Masses", new GenericCourier()},
                                {"Send the Marines", new GenericCourier()},
@@ -70,15 +73,21 @@ namespace Questor.Storylines
                                {"Brand New Harvesters", new GenericCourier()},
                                {"Heart of the Rogue Drone", new GenericCourier()},
                                {"Their Secret Defense", new GenericCourier()},
-                               /* COURIER/DELIVERY - MORE THAN ONE RACE */
-                               
+
                                /* COMBAT - ALL FACTIONS */
-                               {"Covering Your Tracks", new GenericCombatStoryline()},
-                               {"Evolution", new GenericCombatStoryline()},
-                               {"Patient Zero", new GenericCombatStoryline()},
-                               {"Record Cleaning", new GenericCombatStoryline()},
-                               {"Shipyard Theft", new GenericCombatStoryline()},
-                               {"Soothe the Salvage Beast", new GenericCombatStoryline()},
+                               {"Covering Your Tracks", new GenericCombatStoryline()},//lvl4
+                               {"Evolution", new GenericCombatStoryline()},//lvl4
+                               {"Patient Zero", new GenericCombatStoryline()},//lvl4
+                               {"Record Cleaning", new GenericCombatStoryline()},//lvl4
+                               {"Shipyard Theft", new GenericCombatStoryline()},//lvl4
+                               {"Soothe the Salvage Beast", new GenericCombatStoryline()},//lvl3
+                               {"Kidnappers Strike - Ambush In The Dark (1 of 10)", new GenericCombatStoryline()},//lvl3
+                               {"Kidnappers Strike - The Kidnapping (3 of 10)", new GenericCombatStoryline()},//lvl3
+                               {"Kidnappers Strike - Incriminating Evidence (5 of 10)", new GenericCombatStoryline()},//lvl3
+                               {"Kidnappers Strike - The Secret Meeting (7 of 10)", new GenericCombatStoryline()},//lvl3
+                               {"Kidnappers Strike - Defend the Civilian Convoy (8 of 10)", new GenericCombatStoryline()},//lvl3
+                               {"Kidnappers Strike - Retrieve the Prisoners (9 of 10)", new GenericCombatStoryline()},//lvl3
+                               {"Kidnappers Strike - The Final Battle (10 of 10)", new GenericCombatStoryline()},//lvl3     
                                /* COMBAT - AMARR */
                                {"Blood Farm", new GenericCombatStoryline()},
                                {"Dissidents", new GenericCombatStoryline()},
@@ -93,25 +102,8 @@ namespace Questor.Storylines
                                {"Innocents in the Crossfire", new GenericCombatStoryline()},
                                {"Jealous Rivals", new GenericCombatStoryline()},
                                {"Stem the Flow", new GenericCombatStoryline()},
-                               {"Kidnappers Strike - Ambush in the Dark (1 of 10)", new GenericCombatStoryline()}, //Caldari L3
-                               {"Kidnappers Strike - The Interrogation (2 of 10)", new GenericCombatStoryline()}, //Caldari L3
-                               {"Kidnappers Strike - The Kidnapping (3 of 10)", new GenericCombatStoryline()}, //Caldari L3
-                               {"Kidnappers Strike - Possible Leads (4 of 10)", new GenericCombatStoryline()}, //Caldari L3
-                               {"Kidnappers Strike - Incriminating Evidence (5 of 10)", new GenericCombatStoryline()}, //Caldari L3
-                               {"Kidnappers Strike - The Flu Outbreak (6 of 10)", new GenericCourier()},//Caldari L3
-                               {"Kidnappers Strike - The Secret Meeting (7 of 10)", new GenericCombatStoryline()}, //Caldari L3
-                               {"Kidnappers Strike - Defend the Civilian Convoy (8 of 10)", new GenericCombatStoryline()}, //Caldari L3
-                               {"Kidnappers Strike - Retrieve the Prisoners (9 of 10)", new GenericCombatStoryline()}, //Caldari L3
-                               {"Kidnappers Strike - The Final Battle (10 of 10)", new GenericCombatStoryline()}, //Caldari L3
                                /* COMBAT - GALLENTE */
                                {"A Force to Be Reckoned With", new GenericCombatStoryline()},
-                               {"Kidnappers Strike - Ambush In The Dark (1 of 10)", new GenericCombatStoryline()},
-                               {"Kidnappers Strike - The Kidnapping (3 of 10)", new GenericCombatStoryline()},
-                               {"Kidnappers Strike - Incriminating Evidence (5 of 10)", new GenericCombatStoryline()},
-                               {"Kidnappers Strike - The Secret Meeting (7 of 10)", new GenericCombatStoryline()},
-                               {"Kidnappers Strike - Defend the Civilian Convoy (8 of 10)", new GenericCombatStoryline()},
-                               {"Kidnappers Strike - Retrieve the Prisoners (9 of 10)", new GenericCombatStoryline()},
-                               {"Kidnappers Strike - The Final Battle (10 of 10)", new GenericCombatStoryline()},
                                {"Whispers in the Dark - First Contact (1 of 4)", new GenericCombatStoryline()},
                                {"Whispers in the Dark - Lay and Pray (2 of 4)", new GenericCombatStoryline()},
                                {"Whispers in the Dark - The Outpost (4 of 4)", new GenericCombatStoryline()},
@@ -122,8 +114,7 @@ namespace Questor.Storylines
                                {"Nine Tenths of the Wormhole", new GenericCombatStoryline()},
                                {"Postmodern Primitives", new GenericCombatStoryline()},
                                {"Quota Season", new GenericCombatStoryline()},
-                               {"The Blood of Angry Men", new GenericCombatStoryline()},
-                               /* COMBAT - MORE THAN ONE RACE */                                                            
+                               {"The Blood of Angry Men", new GenericCombatStoryline()},           
                             };
         }
 
