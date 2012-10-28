@@ -144,15 +144,28 @@ namespace Questor.Storylines
                     int i = 1;
                     foreach (DirectAgentMission _mission in missionsInJournal)
                     {
+                        Logging.Log("MissionInJournal", "[" + i + "] Named      [" + Cache.Instance.FilterPath(_mission.Name) + ".xml]", Logging.Yellow);
+                        //Logging.Log("MissionInJournal", "[" + i + "] AgentID    [" + _mission.AgentId + "]", Logging.Yellow);
+                        Logging.Log("MissionInJournal", "[" + i + "] Important? [" + _mission.Important + "]", Logging.Yellow);
+                        //Logging.Log("MissionInJournal", "[" + i + "] State      [" + _mission.State + "]", Logging.Yellow);
+                        Logging.Log("MissionInJournal", "[" + i + "] Type       [" + _mission.Type + "]", Logging.Yellow);
+                        i++;
+                    }
+                }
+                missionsInJournal = missionsInJournal.Where(m => m.Type.Contains("UI/Agents/MissionTypes/Storyline")).ToList();
+                if (Settings.Instance.DebugStorylineMissions)
+                {
+                    int i = 1;
+                    foreach (DirectAgentMission _mission in missionsInJournal)
+                    {
                         Logging.Log("Storyline", "[" + i + "] Named      [" + Cache.Instance.FilterPath(_mission.Name) + ".xml]", Logging.Yellow);
-                        Logging.Log("Storyline", "[" + i + "] AgentID    [" + _mission.AgentId + "]", Logging.Yellow);
+                        //Logging.Log("Storyline", "[" + i + "] AgentID    [" + _mission.AgentId + "]", Logging.Yellow);
                         Logging.Log("Storyline", "[" + i + "] Important? [" + _mission.Important + "]", Logging.Yellow);
-                        Logging.Log("Storyline", "[" + i + "] State      [" + _mission.State + "]", Logging.Yellow);
+                        //Logging.Log("Storyline", "[" + i + "] State      [" + _mission.State + "]", Logging.Yellow);
                         Logging.Log("Storyline", "[" + i + "] Type       [" + _mission.Type + "]", Logging.Yellow);
                         i++;
                     }
-                } 
-                missionsInJournal = missionsInJournal.Where(m => m.Type.Contains("Storyline")).ToList();
+                }
                 missionsInJournal = missionsInJournal.Where(m => _storylines.ContainsKey(Cache.Instance.FilterPath(m.Name)));
                 Logging.Log("Storyline", "Currently have  [" + missionsInJournal.Count() + "] storyline missions questor knows how to do", Logging.Yellow);
                 missionsInJournal = missionsInJournal.Where(m => Settings.Instance.MissionBlacklist.All(b => b.ToLower() != Cache.Instance.FilterPath(m.Name).ToLower())).ToList();
