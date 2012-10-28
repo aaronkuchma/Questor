@@ -152,7 +152,7 @@ namespace Questor.Storylines
                         i++;
                     }
                 } 
-                missionsInJournal = missionsInJournal.Where(m => m.Important).ToList();
+                missionsInJournal = missionsInJournal.Where(m => m.Type.Contains("Storyline")).ToList();
                 missionsInJournal = missionsInJournal.Where(m => _storylines.ContainsKey(Cache.Instance.FilterPath(m.Name)));
                 Logging.Log("Storyline", "Currently have  [" + missionsInJournal.Count() + "] storyline missions questor knows how to do", Logging.Yellow);
                 missionsInJournal = missionsInJournal.Where(m => Settings.Instance.MissionBlacklist.All(b => b.ToLower() != Cache.Instance.FilterPath(m.Name).ToLower())).ToList();
