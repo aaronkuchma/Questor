@@ -93,6 +93,16 @@ namespace Questor.Storylines
                                {"Innocents in the Crossfire", new GenericCombatStoryline()},
                                {"Jealous Rivals", new GenericCombatStoryline()},
                                {"Stem the Flow", new GenericCombatStoryline()},
+                               {"Kidnappers Strike - Ambush in the Dark (1 of 10)", new GenericCombatStoryline()}, //Caldari L3
+                               {"Kidnappers Strike - The Interrogation (2 of 10)", new GenericCombatStoryline()}, //Caldari L3
+                               {"Kidnappers Strike - The Kidnapping (3 of 10)", new GenericCombatStoryline()}, //Caldari L3
+                               {"Kidnappers Strike - Possible Leads (4 of 10)", new GenericCombatStoryline()}, //Caldari L3
+                               {"Kidnappers Strike - Incriminating Evidence (5 of 10)", new GenericCombatStoryline()}, //Caldari L3
+                               {"Kidnappers Strike - The Flu Outbreak (6 of 10)", new GenericCourier()},//Caldari L3
+                               {"Kidnappers Strike - The Secret Meeting (7 of 10)", new GenericCombatStoryline()}, //Caldari L3
+                               {"Kidnappers Strike - Defend the Civilian Convoy (8 of 10)", new GenericCombatStoryline()}, //Caldari L3
+                               {"Kidnappers Strike - Retrieve the Prisoners (9 of 10)", new GenericCombatStoryline()}, //Caldari L3
+                               {"Kidnappers Strike - The Final Battle (10 of 10)", new GenericCombatStoryline()}, //Caldari L3
                                /* COMBAT - GALLENTE */
                                {"A Force to Be Reckoned With", new GenericCombatStoryline()},
                                {"Kidnappers Strike - Ambush In The Dark (1 of 10)", new GenericCombatStoryline()},
