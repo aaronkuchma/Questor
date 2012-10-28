@@ -401,7 +401,16 @@ namespace Questor.Modules.Lookup
         // Questor GUI location settings
         //
         public int? WindowXPosition { get; set; }
+
         public int? WindowYPosition { get; set; }
+
+        public int? EVEWindowXPosition { get; set; }
+
+        public int? EVEWindowYPosition { get; set; }
+
+        public int? EVEWindowXSize { get; set; }
+
+        public int? EVEWindowYSize { get; set; }
 
         //
         // path information - used to load the XML and used in other modules
@@ -608,7 +617,10 @@ namespace Questor.Modules.Lookup
                 //windows position (needs to be changed, default is off screen)
                 WindowYPosition = 400;
                 //windows position (needs to be changed, default is off screen)
-
+                EVEWindowXPosition = 111;
+                EVEWindowYPosition = 111;
+                EVEWindowXSize = 111;
+                EVEWindowYSize = 111;
                 //
                 // Ship Names
                 //
@@ -913,10 +925,26 @@ namespace Questor.Modules.Lookup
                     //
                     // Location of the Questor GUI on startup (default is off the screen)
                     //
+                    //X Questor GUI window position (needs to be changed, default is off screen)
                     WindowXPosition = (int?)xml.Element("windowXPosition") ?? 1600;
-                    //windows position (needs to be changed, default is off screen)
+                    //Y Questor GUI window position (needs to be changed, default is off screen)
                     WindowYPosition = (int?)xml.Element("windowYPosition") ?? 1050;
-                    //windows position (needs to be changed, default is off screen)
+                    //
+                    // Location of the EVE Window on startup (default is to leave the window alone)
+                    //
+                    //EVE Client window position
+                    EVEWindowXPosition = (int?)xml.Element("eveWindowXPosition") ?? 111;
+                    //EVE Client window position
+                    EVEWindowYPosition = (int?)xml.Element("eveWindowYPosition") ?? 111;
+                    //
+                    // Size of the EVE Window on startup (default is to leave the window alone)
+                    // This CAN and WILL distort the proportions of the EVE client if you configure it to do so.
+                    // ISBOXER arguably does this with more elegance...
+                    //
+                    //EVE Client window position
+                    EVEWindowXSize = (int?)xml.Element("eveWindowXSize") ?? 111;
+                    //EVE Client window position
+                    EVEWindowYSize = (int?)xml.Element("eveWindowYSize") ?? 111;
 
                     //
                     // Ship Names

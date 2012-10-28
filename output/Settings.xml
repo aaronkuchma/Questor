@@ -451,8 +451,19 @@
   <!--                                                -->
   
   <!-- X Position of Questor Window -->
-  <windowXPosition>1600</windowXPosition><!-- needs to be customized -->
+  <windowXPosition>1600</windowXPosition> <!-- needs to be customized -->
   <!-- Y Position of Questor Window -->
-  <windowYPosition>1050</windowYPosition><!-- needs to be customized -->
+  <windowYPosition>1050</windowYPosition> <!-- needs to be customized -->
 
+  <!-- X Position of EVE Window -->
+  <eveWindowXPosition></eveWindowXPosition> <!-- blank leaves the EVE Window Untouched  -->
+  <!-- Y Position of EVE Window -->
+  <eveWindowYPosition></eveWindowYPosition> <!-- blank leaves the EVE Window Untouched  -->
+  <!-- X Size of EVE Window -->
+  <eveWindowXSize></eveWindowXSize> <!-- blank leaves the EVE Window Untouched -->
+  <!-- Y Size of EVE Window -->
+  <eveWindowYSize></eveWindowYSize> <!-- blank leaves the EVE Window Untouched  -->
+
+  
+  
 </settings>
