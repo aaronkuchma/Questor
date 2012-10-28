@@ -354,6 +354,16 @@ namespace Questor.Modules.BackgroundTasks
                 Cache.Instance.DirectEve.ExecuteCommand(DirectCmd.CmdQuitGame);
                 return false;
             }
+            if (Cache.Instance.CloseQuestorEndProcess)
+            {
+                Logging.Log("Questor", "Closing with: Process.GetCurrentProcess().Kill()", Logging.White);
+                Process.GetCurrentProcess().Kill();
+                return false;
+            }
+
+            Logging.Log("Questor", "Closing with: DirectCmd.CmdQuitGame", Logging.White);
+            Cache.Instance.DirectEve.ExecuteCommand(DirectCmd.CmdQuitGame);
+            return false;
         }
 
         public static bool CloseInventoryWindows()
