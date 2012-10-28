@@ -30,6 +30,7 @@
   <debugScheduler>false</debugScheduler>
   <debugStates>false</debugStates>
   <debugStatistics>false</debugStatistics>
+  <debugStorylineMissions>false</debugStorylineMissions>
   <debugTraveler>false</debugTraveler>
   <debugUI>false</debugUI>
   <debugUnloadLoot>false</debugUnloadLoot>
