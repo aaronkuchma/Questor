@@ -105,6 +105,8 @@ namespace Questor.Modules.Lookup
         CustomsOfficial = 446,
         Billboard = 323,
         Merchant = 297,
+        FactionWarfareNPC = 288,
+
 
         Shuttle = 31,
         Industrial = 28,

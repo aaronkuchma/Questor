@@ -706,6 +706,16 @@ namespace Questor.Modules.Caching
             }
         }
 
+        public bool IsFactionWarfareNPC
+        {
+            get
+            {
+                bool result = false;
+                result |= GroupId == (int)Group.FactionWarfareNPC;
+                return result;
+            }
+        }
+
         public bool IsEntityIShouldLeaveAlone
         {
             get

@@ -315,6 +315,7 @@ namespace Questor.Modules.Lookup
         public int MinimumAmmoCharges { get; set; }
         public List<Ammo> Ammo { get; private set; }
 
+        public int DoNotSwitchTargetsIfTargetHasMoreThanThisArmorDamagePercentage { get; set; }
         //
         // Script Settings - TypeIDs for the scripts you would like to use in these modules
         //
@@ -694,7 +695,7 @@ namespace Questor.Modules.Lookup
                 DontShootFrigatesWithSiegeorAutoCannons = false;
                 MaximumHighValueTargets = 2;
                 MaximumLowValueTargets = 2;
-
+                DoNotSwitchTargetsIfTargetHasMoreThanThisArmorDamagePercentage = 60;
                 //
                 // Script Settings - TypeIDs for the scripts you would like to use in these modules
                 //
@@ -1137,7 +1138,7 @@ namespace Questor.Modules.Lookup
                         (bool?)xml.Element("DontShootFrigatesWithSiegeorAutoCannons") ?? false;
                     MaximumHighValueTargets = (int?)xml.Element("maximumHighValueTargets") ?? 2;
                     MaximumLowValueTargets = (int?)xml.Element("maximumLowValueTargets") ?? 2;
-
+                    DoNotSwitchTargetsIfTargetHasMoreThanThisArmorDamagePercentage = (int?)xml.Element("doNotSwitchTargetsIfTargetHasMoreThanThisArmorDamagePercentage") ?? 60;
                     //
                     // Script Settings - TypeIDs for the scripts you would like to use in these modules
                     //
