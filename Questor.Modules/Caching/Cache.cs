@@ -1240,7 +1240,7 @@ namespace Questor.Modules.Caching
                     return new List<EntityCache>();
                 }
 
-                return _entities ?? (_entities = DirectEve.Entities.Select(e => new EntityCache(e)).Where(e => e.IsValid && !e.IsBadIdea).ToList());
+                return _entities ?? (_entities = DirectEve.Entities.Select(e => new EntityCache(e)).Where(e => e.IsValid).ToList());
             }
         }
 
@@ -2325,7 +2325,7 @@ namespace Questor.Modules.Caching
             }
 
             // Get all entity targets
-            IEnumerable<EntityCache> targets = Targets.Where(e => e.CategoryId == (int)CategoryID.Entity && e.IsNpc && !e.IsContainer && !e.IsFactionWarfareNPC && !e.IsEntityIShouldLeaveAlone && e.GroupId != (int)Group.LargeCollidableStructure).ToList();
+            IEnumerable<EntityCache> targets = Targets.Where(e => e.CategoryId == (int)CategoryID.Entity && e.IsNpc && !e.IsContainer && !e.IsFactionWarfareNPC && !e.IsEntityIShouldLeaveAlone && !e.IsBadIdea && e.GroupId != (int)Group.LargeCollidableStructure).ToList();
 
             EWarEffectsOnMe(); //updates data that is displayed in the Questor GUI (and possibly used elsewhere later)
 
