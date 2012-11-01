@@ -18,6 +18,8 @@
 
         public static CombatState CurrentCombatState { get; set; }
 
+        public static MiningState CurrentMiningState { get; set; }
+
         public static TravelerState CurrentTravelerState { get; set; }
 
         public static CombatMissionsBehaviorState CurrentCombatMissionBehaviorState { get; set; }

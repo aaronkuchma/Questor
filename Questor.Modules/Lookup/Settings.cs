@@ -972,58 +972,98 @@ namespace Questor.Modules.Lookup
                         Logging.Log("Settings","Invalid Format for eveWindow Settings - skipping",Logging.Teal);
                     }
 
-                    //
-                    // Ship Names
-                    //
-                    CombatShipName = (string)xml.Element("combatShipName") ?? "My frigate of doom";
-                    SalvageShipName = (string)xml.Element("salvageShipName") ?? "My Destroyer of salvage";
-                    TransportShipName = (string)xml.Element("transportShipName") ?? "My Hauler of transportation";
-                    TravelShipName = (string)xml.Element("travelShipName") ?? "My Shuttle of traveling";
-
-                    //
-                    // Storage Location for Loot, Ammo, Bookmarks
-                    //
-                    HomeBookmarkName = (string)xml.Element("homeBookmarkName") ?? "myHomeBookmark";
-                    LootHangar = (string)xml.Element("lootHangar");
-                    AmmoHangar = (string)xml.Element("ammoHangar");
-                    BookmarkHangar = (string)xml.Element("bookmarkHangar");
-                    LootContainer = (string)xml.Element("lootContainer");
-                    if (LootContainer != null)
+                    try
                     {
-                        LootContainer = LootContainer.ToLower();
+                        //
+                        // Ship Names
+                        //
+                        CombatShipName = (string)xml.Element("combatShipName") ?? "My frigate of doom";
+                        SalvageShipName = (string)xml.Element("salvageShipName") ?? "My Destroyer of salvage";
+                        TransportShipName = (string)xml.Element("transportShipName") ?? "My Hauler of transportation";
+                        TravelShipName = (string)xml.Element("travelShipName") ?? "My Shuttle of traveling";
                     }
-                    HighTierLootContainer = (string)xml.Element("highValueLootContainer");
-                    if (HighTierLootContainer != null)
+                    catch (Exception exception)
                     {
-                        HighTierLootContainer = HighTierLootContainer.ToLower();
+                        Logging.Log("Settings", "Error Loading Ship Name Settings [" + exception + "]", Logging.Teal);
                     }
 
-                    MoveCommonMissionCompletionItemsToAmmoHangar = (bool?)xml.Element("moveCommonMissionCompletionItemsToAmmoHangar") ?? false;
-                    MoveCommonMissionCompletionItemsToItemsHangar = (bool?)xml.Element("moveCommonMissionCompletionItemsToItemsHangar") ?? true;
+                    try
+                    {
+                        //
+                        // Storage Location for Loot, Ammo, Bookmarks
+                        //
+                        HomeBookmarkName = (string)xml.Element("homeBookmarkName") ?? "myHomeBookmark";
+                        LootHangar = (string)xml.Element("lootHangar");
+                        if (string.IsNullOrEmpty(Settings.Instance.LootHangar))
+                        {
+                            Logging.Log("Settings","Loothangar [" +  "ItemsHangar" + "]",Logging.White);
+                        }
+                        else
+                        {
+                            Logging.Log("Settings", "Loothangar [" + Settings.Instance.LootHangar + "]", Logging.White);
+                        }
+                        AmmoHangar = (string)xml.Element("ammoHangar");
+                        if (string.IsNullOrEmpty(Settings.Instance.AmmoHangar))
+                        {
+                            Logging.Log("Settings", "AmmoHangar [" + "AmmoHangar" + "]", Logging.White);
+                        }
+                        else
+                        {
+                            Logging.Log("Settings", "AmmoHangar [" + Settings.Instance.AmmoHangar + "]", Logging.White);
+                        }
+                        BookmarkHangar = (string)xml.Element("bookmarkHangar");
+                        LootContainer = (string)xml.Element("lootContainer");
+                        if (LootContainer != null)
+                        {
+                            LootContainer = LootContainer.ToLower();
+                        }
+                        HighTierLootContainer = (string)xml.Element("highValueLootContainer");
+                        if (HighTierLootContainer != null)
+                        {
+                            HighTierLootContainer = HighTierLootContainer.ToLower();
+                        }
 
-                    //
-                    // Loot and Salvage Settings
-                    //
-                    LootEverything = (bool?)xml.Element("lootEverything") ?? true;
-                    UseGatesInSalvage = (bool?)xml.Element("useGatesInSalvage") ?? false;
-                    // if our mission does not despawn (likely someone in the mission looting our stuff?) use the gates when salvaging to get to our bookmarks
-                    CreateSalvageBookmarks = (bool?)xml.Element("createSalvageBookmarks") ?? false;
-                    CreateSalvageBookmarksIn = (string)xml.Element("createSalvageBookmarksIn") ?? "Player";
-                    //Player or Corp
-                    //other setting is "Corp"
-                    BookmarkPrefix = (string)xml.Element("bookmarkPrefix") ?? "Salvage:";
-                    MinimumWreckCount = (int?)xml.Element("minimumWreckCount") ?? 1;
-                    AfterMissionSalvaging = (bool?)xml.Element("afterMissionSalvaging") ?? false;
-                    FirstSalvageBookmarksInSystem = (bool?)xml.Element("FirstSalvageBookmarksInSystem") ?? false;
-                    SalvageMultipleMissionsinOnePass = (bool?)xml.Element("salvageMultpleMissionsinOnePass") ?? false;
-                    UnloadLootAtStation = (bool?)xml.Element("unloadLootAtStation") ?? false;
-                    ReserveCargoCapacity = (int?)xml.Element("reserveCargoCapacity") ?? 0;
-                    MaximumWreckTargets = (int?)xml.Element("maximumWreckTargets") ?? 0;
-                    WreckBlackListSmallWrecks = (bool?)xml.Element("WreckBlackListSmallWrecks") ?? false;
-                    WreckBlackListMediumWrecks = (bool?)xml.Element("WreckBlackListMediumWrecks") ?? false;
-                    AgeofBookmarksForSalvageBehavior = (int?)xml.Element("ageofBookmarksForSalvageBehavior") ?? 45;
-                    AgeofSalvageBookmarksToExpire = (int?)xml.Element("ageofSalvageBookmarksToExpire") ?? 120;
+                        MoveCommonMissionCompletionItemsToAmmoHangar = (bool?)xml.Element("moveCommonMissionCompletionItemsToAmmoHangar") ?? false;
+                        MoveCommonMissionCompletionItemsToItemsHangar = (bool?)xml.Element("moveCommonMissionCompletionItemsToItemsHangar") ?? true;
+                    }
+                    catch (Exception exception)
+                    {
+                        Logging.Log("Settings","Error Loading Hangar Settings [" + exception + "]",Logging.Teal);
+                    }
+                    
 
+                    
+                    try
+                    {
+                        //
+                        // Loot and Salvage Settings
+                        //
+                        LootEverything = (bool?)xml.Element("lootEverything") ?? true;
+                        UseGatesInSalvage = (bool?)xml.Element("useGatesInSalvage") ?? false;
+                        // if our mission does not despawn (likely someone in the mission looting our stuff?) use the gates when salvaging to get to our bookmarks
+                        CreateSalvageBookmarks = (bool?)xml.Element("createSalvageBookmarks") ?? false;
+                        CreateSalvageBookmarksIn = (string)xml.Element("createSalvageBookmarksIn") ?? "Player";
+                        //Player or Corp
+                        //other setting is "Corp"
+                        BookmarkPrefix = (string)xml.Element("bookmarkPrefix") ?? "Salvage:";
+                        MinimumWreckCount = (int?)xml.Element("minimumWreckCount") ?? 1;
+                        AfterMissionSalvaging = (bool?)xml.Element("afterMissionSalvaging") ?? false;
+                        FirstSalvageBookmarksInSystem = (bool?)xml.Element("FirstSalvageBookmarksInSystem") ?? false;
+                        SalvageMultipleMissionsinOnePass = (bool?)xml.Element("salvageMultpleMissionsinOnePass") ?? false;
+                        UnloadLootAtStation = (bool?)xml.Element("unloadLootAtStation") ?? false;
+                        ReserveCargoCapacity = (int?)xml.Element("reserveCargoCapacity") ?? 0;
+                        MaximumWreckTargets = (int?)xml.Element("maximumWreckTargets") ?? 0;
+                        WreckBlackListSmallWrecks = (bool?)xml.Element("WreckBlackListSmallWrecks") ?? false;
+                        WreckBlackListMediumWrecks = (bool?)xml.Element("WreckBlackListMediumWrecks") ?? false;
+                        AgeofBookmarksForSalvageBehavior = (int?)xml.Element("ageofBookmarksForSalvageBehavior") ?? 45;
+                        AgeofSalvageBookmarksToExpire = (int?)xml.Element("ageofSalvageBookmarksToExpire") ?? 120;
+    
+                    }
+                    catch (Exception exception)
+                    {
+                        Logging.Log("Settings", "Error Loading Loot and Salvage Settings [" + exception + "]", Logging.Teal);
+                    }
+                    
                     //
                     // at what memory usage do we need to restart this session?
                     //

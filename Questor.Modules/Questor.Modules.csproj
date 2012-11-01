@@ -80,6 +80,7 @@
     <Compile Include="Lookup\CombatMissionSettings.cs" />
     <Compile Include="Actions\Action.cs" />
     <Compile Include="States\CombatMissionsBehaviorState.cs" />
+    <Compile Include="States\MiningState.cs" />
     <Compile Include="States\MissionActionState.cs" />
     <Compile Include="Actions\Buy.cs" />
     <Compile Include="Actions\Drop.cs" />

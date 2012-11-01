@@ -155,7 +155,7 @@ namespace Questor
                 if (schedule.StartTimeSpecified)
                 {
                     if (schedule.Start1 > schedule.Stop1) schedule.Stop1 = schedule.Stop1.AddDays(1);
-                    if (DateTime.UtcNow.AddHours(2) > schedule.Start1 && DateTime.UtcNow < schedule.Stop1)
+                    if (DateTime.Now.AddHours(2) > schedule.Start1 && DateTime.Now < schedule.Stop1)
                     {
                         StartTime = schedule.Start1;
                         StopTime = schedule.Stop1;
@@ -166,11 +166,10 @@ namespace Questor
                 
                 if (schedule.StartTime2Specified)
                 {
-                    if (DateTime.UtcNow > schedule.Stop1 || DateTime.UtcNow.DayOfYear > schedule.Stop1.DayOfYear) //if after schedule1 stoptime or the next day
-
+                    if (DateTime.Now > schedule.Stop1 || DateTime.Now.DayOfYear > schedule.Stop1.DayOfYear) //if after schedule1 stoptime or the next day
                     {
                         if (schedule.Start2 > schedule.Stop2) schedule.Stop2 = schedule.Stop2.AddDays(1);
-                        if (DateTime.UtcNow.AddHours(2) > schedule.Start2 && DateTime.UtcNow < schedule.Stop2)
+                        if (DateTime.Now.AddHours(2) > schedule.Start2 && DateTime.Now < schedule.Stop2)
                         {
                             StartTime = schedule.Start2;
                             StopTime = schedule.Stop2;
@@ -182,10 +181,10 @@ namespace Questor
                 
                 if (schedule.StartTime3Specified)
                 {
-                    if (DateTime.UtcNow > schedule.Stop2 || DateTime.UtcNow.DayOfYear > schedule.Stop2.DayOfYear) //if after schedule2 stoptime or the next day
+                    if (DateTime.Now > schedule.Stop2 || DateTime.Now.DayOfYear > schedule.Stop2.DayOfYear) //if after schedule2 stoptime or the next day
                     {
                         if (schedule.Start3 > schedule.Stop3) schedule.Stop3 = schedule.Stop3.AddDays(1);
-                        if (DateTime.UtcNow.AddHours(2) > schedule.Start3 && DateTime.UtcNow < schedule.Stop3)
+                        if (DateTime.Now.AddHours(2) > schedule.Start3 && DateTime.Now < schedule.Stop3)
                         {
                             StartTime = schedule.Start3;
                             StopTime = schedule.Stop3;
@@ -210,19 +209,19 @@ namespace Questor
                 if (schedule.StartTimeSpecified || schedule.StartTime2Specified || schedule.StartTime3Specified)
                     StartTime = StartTime.AddSeconds(R.Next(0, (RandStartDelay * 60)));
 
-                if ((DateTime.UtcNow > StartTime))
+                if ((DateTime.Now > StartTime))
                 {
-                    if ((DateTime.UtcNow.Subtract(StartTime).TotalMinutes < 1200)) //if we're less than x hours past start time, start now
+                    if ((DateTime.Now.Subtract(StartTime).TotalMinutes < 1200)) //if we're less than x hours past start time, start now
                     {
-                        StartTime = DateTime.UtcNow;
+                        StartTime = DateTime.Now;
                         _readyToStarta = true;
                     }
                     else
                         StartTime = StartTime.AddDays(1); //otherwise, start tomorrow at start time
                 }
-                else if ((StartTime.Subtract(DateTime.UtcNow).TotalMinutes > 1200)) //if we're more than x hours shy of start time, start now
+                else if ((StartTime.Subtract(DateTime.Now).TotalMinutes > 1200)) //if we're more than x hours shy of start time, start now
                     {
-                        StartTime = DateTime.UtcNow;
+                        StartTime = DateTime.Now;
                         _readyToStarta = true;
                     }
 
@@ -239,7 +238,7 @@ namespace Questor
 
                 if (!_readyToStarta)
                 {
-                    _minutesToStart = StartTime.Subtract(DateTime.UtcNow).TotalMinutes;
+                    _minutesToStart = StartTime.Subtract(DateTime.Now).TotalMinutes;
                     Logging.Log("Startup", "Starting at " + StartTime + ". " + String.Format("{0:0.##}", _minutesToStart) + " minutes to go.", Logging.Yellow);
                     Timer.Elapsed += new ElapsedEventHandler(TimerEventProcessor);
                     if (_minutesToStart > 0)

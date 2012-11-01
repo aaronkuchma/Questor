@@ -213,6 +213,102 @@ namespace Questor.Modules.Activities
             return;
         }
 
+        public static void TravelToMiningHomeBookmark(DirectBookmark myHomeBookmark, string module)
+        {
+
+            //
+            // defending yourself is more important that the traveling part... so it comes first.
+            //
+            if (Cache.Instance.InSpace && Settings.Instance.DefendWhileTraveling)
+            {
+                if (!Cache.Instance.DirectEve.ActiveShip.Entity.IsCloaked || (Cache.Instance.LastSessionChange.AddSeconds(60) > DateTime.Now))
+                {
+                    if (Settings.Instance.DebugGotobase) Logging.Log(module, "TravelToMiningHomeBookmark: _combat.ProcessState()", Logging.White);
+                    _combat.ProcessState();
+                    if (!Cache.Instance.TargetedBy.Any(t => t.IsWarpScramblingMe))
+                    {
+                        if (Settings.Instance.DebugGotobase) Logging.Log(module, "TravelToMiningHomeBookmark: we are not scrambled - pulling drones.", Logging.White);
+                        Cache.Instance.IsMissionPocketDone = true; //tells drones.cs that we can pull drones
+                        //Logging.Log("CombatmissionBehavior","TravelToAgentStation: not pointed",Logging.White);
+                    }
+                    else if (Cache.Instance.TargetedBy.Any(t => t.IsWarpScramblingMe))
+                    {
+                        Cache.Instance.IsMissionPocketDone = false;
+                        if (Settings.Instance.DebugGotobase) Logging.Log(module, "TravelToMiningHomeBookmark: we are scrambled", Logging.Teal);
+                        _drones.ProcessState();
+                        return;
+                    }
+                }
+            }
+
+            Cache.Instance.OpenWrecks = false;
+
+
+
+            if (Settings.Instance.DebugGotobase) Logging.Log(module, "TravelToMiningHomeBookmark:      Cache.Instance.AgentStationId [" + Cache.Instance.AgentStationID + "]", Logging.White);
+            if (Settings.Instance.DebugGotobase) Logging.Log(module, "TravelToMiningHomeBookmark:  Cache.Instance.AgentSolarSystemId [" + Cache.Instance.AgentSolarSystemID + "]", Logging.White);
+
+            if (_destination == null)
+            {
+                Logging.Log(module, "Destination: [" + myHomeBookmark.Description + "]", Logging.White);
+
+                //Cache.Instance.DirectEve.Navigation.GetLocation((long)myHomeBookmark.LocationId).SetDestination();
+
+                _destination = new BookmarkDestination(myHomeBookmark);
+                //_destination = new StationDestination(Cache.Instance.AgentSolarSystemID, Cache.Instance.AgentStationID, Cache.Instance.AgentStationName);
+                _States.CurrentTravelerState = TravelerState.Idle;
+                return;
+            }
+            else
+            {
+                if (Settings.Instance.DebugGotobase) if (Traveler.Destination != null) Logging.Log("MiningMissionsBehavior", "TravelToMiningHomeBookmark: Traveler.Destination.SolarSystemId [" + Traveler.Destination.SolarSystemId + "]", Logging.White);
+                Traveler.ProcessState();
+
+                //we also assume you are connected during a manual set of questor into travel mode (safe assumption considering someone is at the kb)
+                Cache.Instance.LastKnownGoodConnectedTime = DateTime.Now;
+                Cache.Instance.MyWalletBalance = Cache.Instance.DirectEve.Me.Wealth;
+
+                if (_States.CurrentTravelerState == TravelerState.AtDestination)
+                {
+                    if (_States.CurrentCombatMissionCtrlState == CombatMissionCtrlState.Error)
+                    {
+                        Logging.Log(module, "an error has occurred", Logging.White);
+                        if (_States.CurrentCombatMissionBehaviorState == CombatMissionsBehaviorState.Traveler)
+                        {
+                            _States.CurrentCombatMissionBehaviorState = CombatMissionsBehaviorState.Error;
+                        }
+                        return;
+                    }
+
+                    if (Cache.Instance.InSpace)
+                    {
+                        Logging.Log(module, "Arrived at destination (in space, Questor stopped)", Logging.White);
+                        Cache.Instance.Paused = true;
+                        return;
+                    }
+
+                    Logging.Log(module, "Arrived at destination", Logging.White);
+                    if (_States.CurrentCombatMissionBehaviorState == CombatMissionsBehaviorState.Traveler)
+                    {
+                        _States.CurrentCombatMissionBehaviorState = CombatMissionsBehaviorState.Idle;
+                    }
+
+                    if (_States.CurrentDedicatedBookmarkSalvagerBehaviorState == DedicatedBookmarkSalvagerBehaviorState.Traveler)
+                    {
+                        _States.CurrentDedicatedBookmarkSalvagerBehaviorState = DedicatedBookmarkSalvagerBehaviorState.Idle;
+                    }
+
+                    if (_States.CurrentCombatHelperBehaviorState == CombatHelperBehaviorState.Traveler)
+                    {
+                        _States.CurrentCombatHelperBehaviorState = CombatHelperBehaviorState.Idle;
+                    }
+                    return;
+                }
+            }
+            return;
+        }
+
+
         public static void TravelHome(string module)
         {
             if (_States.CurrentQuestorState == QuestorState.CombatMissionsBehavior || _States.CurrentQuestorState == QuestorState.CloseQuestor)

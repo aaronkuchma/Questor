@@ -20,6 +20,7 @@ namespace Questor.Modules.States
         //TravelerBehavior,
         //CourierMissionBehavior,
         CombatHelperBehavior,
+        Mining,
         //CheckEVEStatus,
         CloseQuestor,
         Error,

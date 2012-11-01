@@ -266,7 +266,7 @@ namespace Questor
                 }
                 else
                 {
-                    dateTimePicker1.Value = DateTime.UtcNow.AddHours(1);
+                    dateTimePicker1.Value = DateTime.Now.AddHours(1);
                     if (!dateTimePicker2.Checked)
                     {
                         Cache.Instance.StopTimeSpecified = true;
@@ -285,7 +285,7 @@ namespace Questor
                 }
                 else
                 {
-                    dateTimePicker1.Value = DateTime.UtcNow.AddHours(1);
+                    dateTimePicker1.Value = DateTime.Now.AddHours(1);
                     if (!dateTimePicker1.Checked)
                     {
                         Cache.Instance.StopTimeSpecified = true;
@@ -320,6 +320,12 @@ namespace Questor
                 {
                     BehaviorComboBox.Items.Clear();
                     foreach (string text in Enum.GetNames(typeof(CombatHelperBehaviorState)))
+                        BehaviorComboBox.Items.Add(text);
+                } 
+                if (_States.CurrentQuestorState == QuestorState.Mining)
+                {
+                    BehaviorComboBox.Items.Clear();
+                    foreach (string text in Enum.GetNames(typeof(MiningState)))
                         BehaviorComboBox.Items.Add(text);
                 }
                 if (_States.CurrentQuestorState == QuestorState.DirectionalScannerBehavior)
@@ -650,6 +656,12 @@ namespace Questor
             {
                 if ((string)BehaviorComboBox.SelectedItem != _States.CurrentCombatMissionBehaviorState.ToString() && !BehaviorComboBox.DroppedDown)
                     BehaviorComboBox.SelectedItem = _States.CurrentCombatMissionBehaviorState.ToString();
+            }
+
+            if (_States.CurrentQuestorState == QuestorState.Mining)
+            {
+                if ((string)BehaviorComboBox.SelectedItem != _States.CurrentMiningState.ToString() && !BehaviorComboBox.DroppedDown)
+                    BehaviorComboBox.SelectedItem = _States.CurrentMiningState.ToString();
             }
 
             if (_States.CurrentQuestorState == QuestorState.DedicatedBookmarkSalvagerBehavior)
@@ -1058,6 +1070,13 @@ namespace Questor
                 _States.CurrentDebugHangarBehaviorState =
                     (DebugHangarsBehaviorState)
                     Enum.Parse(typeof(DebugHangarsBehaviorState), BehaviorComboBox.Text);
+            }
+
+            if (_States.CurrentQuestorState == QuestorState.Mining)
+            {
+                _States.CurrentMiningState =
+                    (MiningState)
+                    Enum.Parse(typeof(MiningState), BehaviorComboBox.Text);
             }
 
             try

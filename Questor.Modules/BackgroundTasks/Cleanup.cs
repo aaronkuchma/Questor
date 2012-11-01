@@ -64,18 +64,23 @@ namespace Questor.Modules.BackgroundTasks
                     {
                         Logging.Log("Questor", "Logging off EVE: In theory eve and questor will restart on their own when the client comes back up", Logging.White);
                         if (Settings.Instance.UseInnerspace)
-                            LavishScript.ExecuteCommand("uplink echo Logging off EVE:  \\\"${Game}\\\" \\\"${Profile}\\\"");
+                        {
+                            LavishScript.ExecuteCommand("uplink echo Logging off EVE:  \\\"${Game}\\\" \\\"${Profile}\\\"");    
+                        }
                         Logging.Log("Questor", "you can change this option by setting the wallet and EveProcessMemoryCeiling options to use exit instead of logoff: see the settings.xml file", Logging.White);
                         Logging.Log("Questor", "Logging Off eve in 15 seconds.", Logging.White);
                         CloseQuestorFlag = false;
-                        CloseQuestorDelay =
-                            DateTime.UtcNow.AddSeconds(Time.Instance.CloseQuestorDelayBeforeExit_seconds);
+                        CloseQuestorDelay = DateTime.UtcNow.AddSeconds(Time.Instance.CloseQuestorDelayBeforeExit_seconds);
                     }
-                    if (CloseQuestorDelay.AddSeconds(-10) < DateTime.UtcNow)
+
+                    if (!_closeQuestor10SecWarningDone)
                     {
-                        Logging.Log("Questor", "Exiting eve in 10 seconds", Logging.White);
+                        _closeQuestor10SecWarningDone = true;
+                        Logging.Log("Questor", "Exiting eve in [" + Time.Instance.CloseQuestorDelayBeforeExit_seconds + "] seconds", Logging.White);
+                        return false;
                     }
-                    if (CloseQuestorDelay < DateTime.UtcNow)
+
+                    if (DateTime.UtcNow > CloseQuestorDelay)
                     {
                         Logging.Log("Questor", "Exiting eve now.", Logging.White);
                         Cache.Instance.DirectEve.ExecuteCommand(DirectCmd.CmdLogOff);
@@ -119,21 +124,15 @@ namespace Questor.Modules.BackgroundTasks
                                         _closeQuestorCMDUplink = false;
                                         CloseQuestorDelay = DateTime.UtcNow.AddSeconds(Time.Instance.CloseQuestorDelayBeforeExit_seconds);
                                     }
-                                    if ((CloseQuestorDelay.AddSeconds(-10) == DateTime.UtcNow) && (!_closeQuestor10SecWarningDone))
+
+                                    if (!_closeQuestor10SecWarningDone)
                                     {
                                         _closeQuestor10SecWarningDone = true;
-                                        Logging.Log("Questor", "Exiting eve in 10 seconds", Logging.White);
-                                        Cache.Instance.DirecteveDispose();
-                                        if (Cache.Instance.CloseQuestorEndProcess)
-                                        {
-                                            Process.GetCurrentProcess().Kill();
-                                            return false;
-                                        }
-                                        
-                                        Cache.Instance.DirectEve.ExecuteCommand(DirectCmd.CmdQuitGame);
+                                        Logging.Log("Questor", "Exiting eve in [" + Time.Instance.CloseQuestorDelayBeforeExit_seconds + "] seconds", Logging.White);
                                         return false;
                                     }
-                                    if (CloseQuestorDelay < DateTime.UtcNow)
+
+                                    if (DateTime.UtcNow > CloseQuestorDelay)
                                     {
                                         Logging.Log("Questor", "Exiting eve now.", Logging.White);
                                         Cache.Instance.DirecteveDispose();
@@ -147,47 +146,34 @@ namespace Questor.Modules.BackgroundTasks
                                     //Logging.Log("Questor: We are in station: CloseQuestorCMDUplinkIsboxerProfile is ["+ CloseQuestorCMDUplinkIsboxerProfile.tostring() +"]");
                                     if (_closeQuestorCMDUplink)
                                     {
-                                        Logging.Log(
-                                            "Questor", "Starting a timer in the innerspace uplink to restart this isboxer character set", Logging.White);
-                                        LavishScript.ExecuteCommand("uplink exec Echo [${Time}] " +
-                                                                    Settings.Instance.CharacterName +
-                                                                    "'s Questor is starting a timedcommand to restart itself in a moment");
-                                        LavishScript.ExecuteCommand(
-                                            "uplink exec Echo [${Time}] timedcommand " + secRestart + " runscript isboxer -launchslot \\\"${ISBoxerCharacterSet}\\\" \\\"${ISBoxerSlot}\\\"");
-                                        LavishScript.ExecuteCommand(
-                                            "uplink timedcommand " + secRestart + " runscript isboxer -launchslot \\\"${ISBoxerCharacterSet}\\\" \\\"${ISBoxerSlot}\\\"");
-                                        Logging.Log(
-                                            "Questor", "Done: quitting this session so the new isboxer session can take over", Logging.White);
+                                        Logging.Log("Questor", "Starting a timer in the innerspace uplink to restart this isboxer character set", Logging.White);
+                                        LavishScript.ExecuteCommand("uplink exec Echo [${Time}] " + Settings.Instance.CharacterName + "'s Questor is starting a timedcommand to restart itself in a moment");
+                                        LavishScript.ExecuteCommand("uplink exec Echo [${Time}] timedcommand " + secRestart + " runscript isboxer -launchslot \\\"${ISBoxerCharacterSet}\\\" \\\"${ISBoxerSlot}\\\"");
+                                        LavishScript.ExecuteCommand("uplink timedcommand " + secRestart + " runscript isboxer -launchslot \\\"${ISBoxerCharacterSet}\\\" \\\"${ISBoxerSlot}\\\"");
+                                        Logging.Log("Questor", "Done: quitting this session so the new isboxer session can take over", Logging.White);
                                         Logging.Log("Questor", "Exiting eve.", Logging.White);
                                         _closeQuestorCMDUplink = false;
-                                        CloseQuestorDelay =
-                                            DateTime.UtcNow.AddSeconds(
-                                                Time.Instance.CloseQuestorDelayBeforeExit_seconds);
+                                        CloseQuestorDelay = DateTime.UtcNow.AddSeconds(Time.Instance.CloseQuestorDelayBeforeExit_seconds);
                                     }
-                                    if ((CloseQuestorDelay.AddSeconds(-10) == DateTime.UtcNow) && (!_closeQuestor10SecWarningDone))
+
+                                    if (!_closeQuestor10SecWarningDone)
                                     {
                                         _closeQuestor10SecWarningDone = true;
-                                        Logging.Log("Questor", "Exiting eve in 10 seconds", Logging.White);
-                                        Cache.Instance.DirecteveDispose();
-                                        if (Cache.Instance.CloseQuestorEndProcess)
-                                        {
-                                            Process.GetCurrentProcess().Kill();
-                                            return false;
-                                        }
-                                        
-                                        Cache.Instance.DirectEve.ExecuteCommand(DirectCmd.CmdQuitGame);
+                                        Logging.Log("Questor", "Exiting eve in [" + Time.Instance.CloseQuestorDelayBeforeExit_seconds + "] seconds", Logging.White);
                                         return false;
                                     }
-                                    if (CloseQuestorDelay < DateTime.UtcNow)
+
+                                    if (DateTime.UtcNow > CloseQuestorDelay)
                                     {
                                         Logging.Log("Questor", "Exiting eve now.", Logging.White);
-                                        Cache.Instance.DirecteveDispose();
                                         if (Cache.Instance.CloseQuestorEndProcess)
                                         {
+                                            Cache.Instance.DirecteveDispose();
                                             Process.GetCurrentProcess().Kill();
                                             return false;
                                         }
 
+                                        Cache.Instance.DirecteveDispose();
                                         Cache.Instance.DirectEve.ExecuteCommand(DirectCmd.CmdQuitGame);
                                         return false;
                                     }
@@ -198,32 +184,24 @@ namespace Questor.Modules.BackgroundTasks
                                 {
                                     if (_closeQuestorCMDUplink)
                                     {
-                                        Logging.Log(
-                                            "Questor", "Starting a timer in the innerspace uplink to execute an arbitrary OS command", Logging.White);
-                                        LavishScript.ExecuteCommand("uplink exec Echo [${Time}] " +
-                                                                    Settings.Instance.CharacterName +
-                                                                    "'s Questor is starting a timedcommand to restart itself in a moment");
-                                        LavishScript.ExecuteCommand(
-                                            "uplink exec Echo [${Time}] timedcommand " + secRestart + " OSExecute " +
-                                            Settings.Instance.CloseQuestorOSCmdContents.ToString(CultureInfo.InvariantCulture));
-                                        LavishScript.ExecuteCommand(
-                                            "uplink exec timedcommand " + secRestart + " OSExecute " +
-                                            Settings.Instance.CloseQuestorOSCmdContents.ToString(CultureInfo.InvariantCulture));
+                                        Logging.Log("Questor", "Starting a timer in the innerspace uplink to execute an arbitrary OS command", Logging.White);
+                                        LavishScript.ExecuteCommand("uplink exec Echo [${Time}] " + Settings.Instance.CharacterName + "'s Questor is starting a timedcommand to restart itself in a moment");
+                                        LavishScript.ExecuteCommand("uplink exec Echo [${Time}] timedcommand " + secRestart + " OSExecute " + Settings.Instance.CloseQuestorOSCmdContents.ToString(CultureInfo.InvariantCulture));
+                                        LavishScript.ExecuteCommand("uplink exec timedcommand " + secRestart + " OSExecute " + Settings.Instance.CloseQuestorOSCmdContents.ToString(CultureInfo.InvariantCulture));
                                         Logging.Log("Questor", "Done: quitting this session", Logging.White);
                                         Logging.Log("Questor", "Exiting eve in 15 seconds.", Logging.White);
                                         _closeQuestorCMDUplink = false;
-                                        CloseQuestorDelay =
-                                            DateTime.UtcNow.AddSeconds(
-                                                Time.Instance.CloseQuestorDelayBeforeExit_seconds);
+                                        CloseQuestorDelay = DateTime.UtcNow.AddSeconds(Time.Instance.CloseQuestorDelayBeforeExit_seconds);
                                     }
-                                    if ((CloseQuestorDelay.AddSeconds(-10) == DateTime.UtcNow) &&
-                                        (!_closeQuestor10SecWarningDone))
+
+                                    if (!_closeQuestor10SecWarningDone)
                                     {
                                         _closeQuestor10SecWarningDone = true;
-                                        Logging.Log("Questor", ": Exiting eve in 10 seconds", Logging.White);
-                                        Cache.Instance.DirectEve.ExecuteCommand(DirectCmd.CmdQuitGame);
+                                        Logging.Log("Questor", "Exiting eve in [" + Time.Instance.CloseQuestorDelayBeforeExit_seconds + "] seconds", Logging.White);
+                                        return false;
                                     }
-                                    if (CloseQuestorDelay < DateTime.UtcNow)
+
+                                    if (DateTime.UtcNow > CloseQuestorDelay)
                                     {
                                         Logging.Log("Questor", "Exiting eve now.", Logging.White);
                                         Cache.Instance.DirecteveDispose();
@@ -238,26 +216,28 @@ namespace Questor.Modules.BackgroundTasks
                                     if (_closeQuestorCMDUplink)
                                     {
                                         _closeQuestorCMDUplink = false;
-                                        CloseQuestorDelay =DateTime.UtcNow.AddSeconds(Time.Instance.CloseQuestorDelayBeforeExit_seconds);
+                                        CloseQuestorDelay = DateTime.UtcNow.AddSeconds(Time.Instance.CloseQuestorDelayBeforeExit_seconds);
                                     }
 
-                                    if ((CloseQuestorDelay.AddSeconds(-10) == DateTime.UtcNow) && (!_closeQuestor10SecWarningDone))
+                                    if (!_closeQuestor10SecWarningDone)
                                     {
                                         _closeQuestor10SecWarningDone = true;
-                                        Logging.Log("Questor", "Exiting eve in 10 seconds", Logging.White);
+                                        Logging.Log("Questor", "Exiting eve in [" + Time.Instance.CloseQuestorDelayBeforeExit_seconds + "] seconds", Logging.White);
                                         return false;
                                     }
 
-                                    if (CloseQuestorDelay < DateTime.UtcNow)
+                                    if (DateTime.UtcNow > CloseQuestorDelay)
                                     {
                                         Logging.Log("Questor", "Exiting eve now.", Logging.White);
                                         Cache.Instance.DirecteveDispose();
                                         if (Cache.Instance.CloseQuestorEndProcess)
                                         {
+                                            Cache.Instance.DirecteveDispose();
                                             Process.GetCurrentProcess().Kill();
                                             return false;
                                         }
 
+                                        Cache.Instance.DirecteveDispose();
                                         Cache.Instance.DirectEve.ExecuteCommand(DirectCmd.CmdQuitGame);
                                         return false;
                                     }
