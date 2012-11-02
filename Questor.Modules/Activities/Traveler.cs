@@ -228,7 +228,7 @@ namespace Questor.Modules.Activities
                     if (!Cache.Instance.TargetedBy.Any(t => t.IsWarpScramblingMe))
                     {
                         if (Settings.Instance.DebugGotobase) Logging.Log(module, "TravelToMiningHomeBookmark: we are not scrambled - pulling drones.", Logging.White);
-                        Cache.Instance.IsMissionPocketDone = true; //tells drones.cs that we can pull drones
+                        //Cache.Instance.IsMissionPocketDone = true; //tells drones.cs that we can pull drones
                         //Logging.Log("CombatmissionBehavior","TravelToAgentStation: not pointed",Logging.White);
                     }
                     else if (Cache.Instance.TargetedBy.Any(t => t.IsWarpScramblingMe))
@@ -610,11 +610,14 @@ namespace Questor.Modules.Activities
                     if (Cache.Instance.InWarp || (!Cache.Instance.InSpace && !Cache.Instance.InStation)) //if we are in warp, do nothing, as nothing can actually be done until we are out of warp anyway.
                         return;
 
+
                     if (Destination == null)
                     {
                         _States.CurrentTravelerState = TravelerState.Error;
                         break;
                     }
+
+
 
                     if (Destination.SolarSystemId != Cache.Instance.DirectEve.Session.SolarSystemId)
                     {
@@ -623,6 +626,8 @@ namespace Questor.Modules.Activities
                     }
                     else if (Destination.PerformFinalDestinationTask())
                     {
+
+                        if (Settings.Instance.DebugGotobase) Logging.Log("Traveler", "Right solar system", Logging.White);
                         _destinationRoute = null;
                         _location = null;
                         _locationName = string.Empty;
